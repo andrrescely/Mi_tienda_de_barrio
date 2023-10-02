@@ -1,6 +1,7 @@
 package org.example;
-import model.Product;
 
+
+import model.Product;
 
 public class Main {
 
@@ -23,5 +24,10 @@ public class Main {
         // Verificar si el nombre del producto contiene una palabra dada
         boolean contienePalabra = producto1.containsKeyword("Producto");
         System.out.println("¿El nombre del producto contiene la palabra 'Producto'? " + contienePalabra);
+
+
+
+
+
     }
 }
