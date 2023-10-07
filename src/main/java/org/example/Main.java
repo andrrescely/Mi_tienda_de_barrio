@@ -1,11 +1,26 @@
 package org.example;
-
-
+import model.Cliente;
 import model.Product;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) {
+
+        List<Product> productos = new ArrayList<>();
+        productos.add(new Product("leche", 1, 31.00));
+        productos.add(new Product("leche en polvo", 2, 8.400));
+
+        Cliente cliente1 = new Cliente(1, "Andres Cely");
+        Cliente cliente2 = new Cliente(2, "Carolina Gonzales");
+
+        Product producto = new Product("Huevos", 1, 2.500);
+        Product producto2 = new Product("Pasabocas", 2, 3.200);
+
+
+
         // Crear una nueva instancia de Product
         Product producto1 = new Product("Producto A", 5, 10.00);
 
@@ -24,6 +39,8 @@ public class Main {
         // Verificar si el nombre del producto contiene una palabra dada
         boolean contienePalabra = producto1.containsKeyword("Producto");
         System.out.println("¿El nombre del producto contiene la palabra 'Producto'? " + contienePalabra);
+
+
 
 
 
