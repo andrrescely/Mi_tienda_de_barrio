@@ -1,13 +1,122 @@
 package org.example;
-import model.Cliente;
-import model.Product;
+//import model.Cliente;
+//import model.Product;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Scanner;
+import model.Producto;
+import model.Inventario;
+import java.util.List;
+import java.util.Scanner;
+
 
 public class Main {
 
+    private final Scanner scanner;
+    private final Inventario inventario;
+
+    public Main() {
+        scanner = new Scanner(System.in);
+        inventario = new Inventario();
+    }
+
+    private void addProduct() {
+        System.out.println("Ingrese el nombre del producto:");
+        String nombre = scanner.nextLine();
+        System.out.println("Ingrese el precio del producto:");
+        double precio = scanner.nextDouble();
+        scanner.nextLine();
+
+        Producto producto = new Producto(nombre, precio);
+        inventario.agregarProducto(producto);
+        System.out.println("Producto agregado exitosamente.");
+    }
+
+    private void removeProduct() {
+        System.out.println("Ingrese el nombre del producto a eliminar:");
+        String nombre = scanner.nextLine();
+
+        if (inventario.existeProducto(nombre)) {
+            inventario.eliminarProducto(nombre);
+            System.out.println("Producto eliminado exitosamente.");
+        } else {
+            System.out.println("Producto no encontrado en el inventario.");
+        }
+    }
+
+    private void updateProduct() {
+        System.out.println("Ingrese el nombre del producto a actualizar:");
+        String nombre = scanner.nextLine();
+
+        if (inventario.existeProducto(nombre)) {
+            System.out.println("Ingrese el nuevo nombre del producto:");
+            String nuevoNombre = scanner.nextLine();
+
+            System.out.println("Ingrese el nuevo precio del producto:");
+            double nuevoPrecio = scanner.nextDouble();
+            scanner.nextLine();
+
+            inventario.actualizarProducto(nombre, nuevoNombre, nuevoPrecio);
+            System.out.println("Producto actualizado exitosamente.");
+        } else {
+            System.out.println("Producto no encontrado en el inventario.");
+        }
+    }
+
+    private void viewAllProducts() {
+        List<Producto> productos = inventario.getProductos();
+
+        System.out.println("Lista de productos:");
+        for (Producto producto : productos) {
+            System.out.println("Nombre: " + producto.getNombre() + ", Precio: " + producto.getPrecio());
+        }
+    }
+
+    public void runMenu() {
+        int choice;
+        do {
+            displayMenu();
+            choice = scanner.nextInt();
+            scanner.nextLine();
+            handleUserChoice(choice);
+        } while (choice != 5);
+    }
+
+    public void displayMenu() {
+        System.out.println("±----------------------------------------±");
+        System.out.println("|   Administrador de Inventario          |");
+        System.out.println("±----------------------------------------±");
+        System.out.println("1. Agregar producto                      |");
+        System.out.println("2. Eliminar producto                     |");
+        System.out.println("3. Actualizar producto                   |");
+        System.out.println("4. Ver todos los productos               |");
+        System.out.println("5. Salir                                 |");
+        System.out.println("±----------------------------------------±");
+        System.out.print("   Ingresa tu opción:    (1 - 5)  ");
+    }
+
+    public void handleUserChoice(int choice) {
+        switch (choice) {
+            case 1 -> addProduct();
+            case 2 -> removeProduct();
+            case 3 -> updateProduct();
+            case 4 -> viewAllProducts();
+            case 5 -> System.out.println("Saliendo...");
+            default -> System.out.println("Opción inválida. Por favor intenta de nuevo.");
+        }
+    }
+
     public static void main(String[] args) {
+        Main manager = new Main();
+        manager.runMenu();
+    }
+
+
+
+
+
+    /*public static void main(String[] args) {
 
         List<Product> productos = new ArrayList<>();
         productos.add(new Product("leche", 1, 31.00));
@@ -47,4 +156,6 @@ public class Main {
 
 
     }
+
+     */
 }
