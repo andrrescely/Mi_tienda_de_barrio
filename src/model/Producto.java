@@ -3,10 +3,12 @@ package model;
 public class Producto {
     private String nombre;
     private double precio;
+    private Categoria categoria;
 
     public Producto(String nombre, double precio) {
         this.nombre = nombre;
         this.precio = precio;
+        this.categoria = categoria;
     }
 
     public String getNombre() {
@@ -18,10 +20,15 @@ public class Producto {
     }
 
     public void setNombre(String nombre) {
+
         this.nombre = nombre;
     }
 
     public void setPrecio(double precio) {
         this.precio = precio;
+
+        }
+    public void setCategoria(Categoria categoria){
+        this.categoria = categoria;
     }
 }

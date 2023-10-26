@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
+
+import model.Categoria;
 import model.Producto;
 import model.Inventario;
 import java.util.List;
@@ -27,6 +29,9 @@ public class Main {
         System.out.println("Ingrese el precio del producto:");
         double precio = scanner.nextDouble();
         scanner.nextLine();
+        System.out.println("Ingrese la categoría del producto (ALIMENTOS, LIMPIEZA, HIGIENE_PERSONAL, ELECTRODOMESTICOS, OTROS):");
+        String categoriaStr = scanner.nextLine();
+        Categoria categoria = Categoria.valueOf(categoriaStr.toUpperCase());
 
         Producto producto = new Producto(nombre, precio);
         inventario.agregarProducto(producto);
