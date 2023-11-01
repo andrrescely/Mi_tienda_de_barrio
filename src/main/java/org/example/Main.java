@@ -5,23 +5,57 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
-
 import model.Categoria;
 import model.Producto;
 import model.Inventario;
 import java.util.List;
-import java.util.Scanner;
+import java.util.Map;
+import model.Categoria;
+import model.Producto;
+
+
 
 
 public class Main {
 
     private final Scanner scanner;
     private final Inventario inventario;
+    private Map<Categoria, List<Producto>> productosPorCategoria;
+
 
     public Main() {
         scanner = new Scanner(System.in);
         inventario = new Inventario();
     }
+
+
+    private void viewAllProducts() {
+        Map<Categoria, List<Producto>> productosPorCategoria = inventario.organizarPorCategoria();
+
+        System.out.println("Lista de productos organizados por categoría:");
+        for (Map.Entry<Categoria, List<Producto>> entry : productosPorCategoria.entrySet()) {
+            Categoria categoria = entry.getKey();
+            List<Producto> productosDeCategoria = entry.getValue();
+
+            System.out.println("Categoría: " + categoria);
+            for (Producto producto : productosDeCategoria) {
+                System.out.println("Nombre: " + producto.getNombre() + ", Precio: " + producto.getPrecio());
+            }
+        }
+    }
+
+
+    /*private void addProductById() {
+        System.out.println("Ingrese el ID del producto:");
+        int id = scanner.nextInt();
+        scanner.nextLine(); // Limpiar el buffer del scanner
+
+        inventario.agregarProductoPorId(id);
+        System.out.println("Producto agregado exitosamente.");
+    }
+    */
+
+
 
     private void addProduct() {
         System.out.println("Ingrese el nombre del producto:");
@@ -33,7 +67,16 @@ public class Main {
         String categoriaStr = scanner.nextLine();
         Categoria categoria = Categoria.valueOf(categoriaStr.toUpperCase());
 
-        Producto producto = new Producto(nombre, precio);
+        System.out.println("Ingrese el ID del producto:");
+        int id = scanner.nextInt();
+        scanner.nextLine(); // Limpiar el buffer del scanner
+
+        inventario.agregarProductoPorId(id);
+        System.out.println("Producto agregado exitosamente.");
+
+
+
+        Producto producto = new Producto(nombre, precio, categoria);
         inventario.agregarProducto(producto);
         System.out.println("Producto agregado exitosamente.");
     }
@@ -66,15 +109,6 @@ public class Main {
             System.out.println("Producto actualizado exitosamente.");
         } else {
             System.out.println("Producto no encontrado en el inventario.");
-        }
-    }
-
-    private void viewAllProducts() {
-        List<Producto> productos = inventario.getProductos();
-
-        System.out.println("Lista de productos:");
-        for (Producto producto : productos) {
-            System.out.println("Nombre: " + producto.getNombre() + ", Precio: " + producto.getPrecio());
         }
     }
 
