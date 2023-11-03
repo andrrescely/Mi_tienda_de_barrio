@@ -1,33 +1,29 @@
 package org.example;
 //import model.Cliente;
-//import model.Product;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 import model.Categoria;
+import model.ExcelReader;
 import model.Producto;
 import model.Inventario;
-import java.util.List;
+
 import java.util.Map;
-import model.Categoria;
-import model.Producto;
+
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 
-
+import java.util.*;
 
 public class Main {
 
     private final Scanner scanner;
     private final Inventario inventario;
-    private Map<Categoria, List<Producto>> productosPorCategoria;
 
-
-    public Main() {
+    public Main(Inventario inventario) {
         scanner = new Scanner(System.in);
-        inventario = new Inventario();
+        this.inventario = inventario;
     }
-
 
     private void viewAllProducts() {
         Map<Categoria, List<Producto>> productosPorCategoria = inventario.organizarPorCategoria();
@@ -38,45 +34,67 @@ public class Main {
             List<Producto> productosDeCategoria = entry.getValue();
 
             System.out.println("Categoría: " + categoria);
+            System.out.println();
             for (Producto producto : productosDeCategoria) {
-                System.out.println("Nombre: " + producto.getNombre() + ", Precio: " + producto.getPrecio());
+                System.out.println("Nombre: " + producto.getNombre());
+                System.out.println("Descripcion: " + producto.getDescripcion());
+                System.out.println("Categoria: " + producto.getCategoria());
+                System.out.println("etiqueta: " + producto.getEtiqueta());
+                System.out.println("Precio: " + producto.getPrecio());
+                System.out.println("Cantidad: " + producto.getCantidad());
+                System.out.println("ID: " + producto.getId());
+                System.out.println();
             }
         }
     }
 
 
-    /*private void addProductById() {
-        System.out.println("Ingrese el ID del producto:");
-        int id = scanner.nextInt();
-        scanner.nextLine(); // Limpiar el buffer del scanner
-
-        inventario.agregarProductoPorId(id);
-        System.out.println("Producto agregado exitosamente.");
-    }
-    */
-
-
-
     private void addProduct() {
         System.out.println("Ingrese el nombre del producto:");
         String nombre = scanner.nextLine();
+
+        System.out.println("Ingrese la descripción del producto:");
+        String descripcion = scanner.nextLine();
+
+        System.out.println("Ingrese la etiqueta del producto:");
+        String etiqueta = scanner.nextLine();
+
         System.out.println("Ingrese el precio del producto:");
         double precio = scanner.nextDouble();
         scanner.nextLine();
-        System.out.println("Ingrese la categoría del producto (ALIMENTOS, LIMPIEZA, HIGIENE_PERSONAL, ELECTRODOMESTICOS, OTROS):");
+        System.out.println("Ingrese la categoría del producto (ASEO_HOGAR,\n" +
+                "    BEBIDAS,\n" +
+                "    CARNES_FRIAS_CONGELADOS,\n" +
+                "    CIGARRILLOS,\n" +
+                "    CUIDADO_BEBE,\n" +
+                "    CUIDADO_PERSONAL,\n" +
+                "    CUIDADO_ROPA,\n" +
+                "    DESPENSA,\n" +
+                "    DROGERIA,\n" +
+                "    DULCES_POSTRES,\n" +
+                "    ELECTRODOMESTICOS,\n" +
+                "    HELADOS,\n" +
+                "    HOGAR_DECORACION,\n" +
+                "    ILUMINACION_ELECTRICOS,\n" +
+                "    LACTEO_HUEVOS_REFRIGERADOS,\n" +
+                "    LIMPIEZA_COCINA,\n" +
+                "    MASCOTAS,\n" +
+                "    PANADERIA_PASTELERIA,\n" +
+                "    PASABOCAS,\n" +
+                "    VINOS_LICORES,):");
         String categoriaStr = scanner.nextLine();
         Categoria categoria = Categoria.valueOf(categoriaStr.toUpperCase());
 
         System.out.println("Ingrese el ID del producto:");
         int id = scanner.nextInt();
-        scanner.nextLine(); // Limpiar el buffer del scanner
+        scanner.nextLine();
 
-        inventario.agregarProductoPorId(id);
-        System.out.println("Producto agregado exitosamente.");
+        System.out.println("Ingrese la cantidad del producto:");
+        int cantidad = scanner.nextInt();
+        scanner.nextLine();
 
+        Producto producto = new Producto(nombre, descripcion, categoria, etiqueta, precio, cantidad);
 
-
-        Producto producto = new Producto(nombre, precio, categoria);
         inventario.agregarProducto(producto);
         System.out.println("Producto agregado exitosamente.");
     }
@@ -110,7 +128,9 @@ public class Main {
         } else {
             System.out.println("Producto no encontrado en el inventario.");
         }
+
     }
+
 
     public void runMenu() {
         int choice;
@@ -147,9 +167,21 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        Main manager = new Main();
+        ExcelReader excelReader = new ExcelReader();
+        List<Producto> productos = excelReader.leerProductosDesdeExcel("C:\\Users\\Admin\\Documents\\Bk Andres\\excel\\Mi tienda de Barrio - Caso de Estudio Ada School (2).xlsx");
+
+        Inventario inventario = new Inventario();
+        for (Producto producto : productos) {
+            inventario.agregarProducto(producto);
+
+        }
+
+        Main manager = new Main(inventario);
         manager.runMenu();
     }
+
+
+
 
 
 

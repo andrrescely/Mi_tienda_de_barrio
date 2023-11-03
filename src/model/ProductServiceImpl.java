@@ -1,5 +1,4 @@
 package model;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +29,8 @@ public class ProductServiceImpl implements ProductServiceI {
     public List<Producto> getAllProducts() {
         return inventario.getProductos();
     }
+
+
 }
 
 

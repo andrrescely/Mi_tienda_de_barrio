@@ -19,12 +19,24 @@ public class Inventario {
 
 
 
-    public void agregarProductoPorId(int id) {
+    /*public void agregarProductoPorId(int id) {
         Producto producto = obtenerProductoPorId(id);
         if (producto != null) {
             agregarProducto(producto);
         }
+    }*/
+
+    public void agregarProductoPorId(int id, int cantidad) {
+        Producto producto = obtenerProductoPorId(id);
+        if (producto != null) {
+            //producto.setCantidad(cantidad); // Asignar la cantidad al producto
+            agregarProducto(producto);
+        }
     }
+
+
+
+
 
     public Producto obtenerProductoPorId(int id) {
         for (Producto producto : productos) {
@@ -45,7 +57,6 @@ public class Inventario {
 
         return productosPorCategoria;
     }
-
 
 
     public boolean existeProducto(String nombre) {
