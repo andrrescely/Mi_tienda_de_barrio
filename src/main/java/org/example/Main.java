@@ -62,46 +62,41 @@ public class Main {
         System.out.println("Ingrese el precio del producto:");
         double precio = scanner.nextDouble();
         scanner.nextLine();
-        System.out.println("Ingrese la categoría del producto (ASEO_HOGAR,\n" +
-                "    BEBIDAS,\n" +
-                "    CARNES_FRIAS_CONGELADOS,\n" +
-                "    CIGARRILLOS,\n" +
-                "    CUIDADO_BEBE,\n" +
-                "    CUIDADO_PERSONAL,\n" +
-                "    CUIDADO_ROPA,\n" +
-                "    DESPENSA,\n" +
-                "    DROGERIA,\n" +
-                "    DULCES_POSTRES,\n" +
-                "    ELECTRODOMESTICOS,\n" +
-                "    HELADOS,\n" +
-                "    HOGAR_DECORACION,\n" +
-                "    ILUMINACION_ELECTRICOS,\n" +
-                "    LACTEO_HUEVOS_REFRIGERADOS,\n" +
-                "    LIMPIEZA_COCINA,\n" +
-                "    MASCOTAS,\n" +
-                "    PANADERIA_PASTELERIA,\n" +
-                "    PASABOCAS,\n" +
-                "    VINOS_LICORES,):");
-        String categoriaStr = scanner.nextLine();
-        Categoria categoria = Categoria.valueOf(categoriaStr.toUpperCase());
 
-        System.out.println("Ingrese el ID del producto:");
-        int id = scanner.nextInt();
-        scanner.nextLine();
+        // Mostrar menú de categorías y obtener selección del usuario
+        System.out.println("Seleccione una categoría:");
+        for (int i = 0; i < Categoria.values().length; i++) {
+            System.out.println((i + 1) + ". " + Categoria.values()[i]);
+        }
+        int opcionCategoria = scanner.nextInt();
+        scanner.nextLine(); // Limpiar el buffer
 
-        System.out.println("Ingrese la cantidad del producto:");
-        int cantidad = scanner.nextInt();
-        scanner.nextLine();
+        if (opcionCategoria >= 1 && opcionCategoria <= Categoria.values().length) {
+            Categoria categoria = Categoria.values()[opcionCategoria - 1];
 
-        Producto producto = new Producto(nombre, descripcion, categoria, etiqueta, precio, cantidad);
+            System.out.println("Ingrese el ID del producto:");
+            int id = scanner.nextInt();
+            scanner.nextLine();
 
-        inventario.agregarProducto(producto);
-        System.out.println("Producto agregado exitosamente.");
+            System.out.println("Ingrese la cantidad del producto:");
+            int cantidad = scanner.nextInt();
+            scanner.nextLine();
+
+            Producto producto = new Producto(nombre, descripcion, categoria, etiqueta, precio, cantidad);
+            producto.setId(id);
+
+            inventario.agregarProducto(producto);
+            System.out.println("Producto agregado exitosamente.");
+        } else {
+            System.out.println("Opción inválida. Por favor intenta de nuevo.");
+        }
     }
+
 
     private void removeProduct() {
         System.out.println("Ingrese el nombre del producto a eliminar:");
         String nombre = scanner.nextLine();
+        nombre = nombre.toLowerCase();
 
         if (inventario.existeProducto(nombre)) {
             inventario.eliminarProducto(nombre);
@@ -114,6 +109,7 @@ public class Main {
     private void updateProduct() {
         System.out.println("Ingrese el nombre del producto a actualizar:");
         String nombre = scanner.nextLine();
+        nombre = nombre.toLowerCase();
 
         if (inventario.existeProducto(nombre)) {
             System.out.println("Ingrese el nuevo nombre del producto:");
@@ -128,8 +124,67 @@ public class Main {
         } else {
             System.out.println("Producto no encontrado en el inventario.");
         }
-
     }
+    private void viewProductsByCategory() {
+        displayMenuCategorias();
+        int opcionCategoria = obtenerOpcionCategoria();
+
+        if (opcionCategoria >= 1 && opcionCategoria <= Categoria.values().length - 1) {
+            Categoria categoriaSeleccionada = Categoria.values()[opcionCategoria - 1];
+
+            List<Producto> productosCategoria = inventario.getProductosPorCategoria(categoriaSeleccionada);
+
+            if (!productosCategoria.isEmpty()) {
+                System.out.println("Productos de la categoría " + categoriaSeleccionada + ":");
+                for (Producto producto : productosCategoria) {
+                    System.out.println("Nombre: " + producto.getNombre());
+                    System.out.println("Descripcion: " + producto.getDescripcion());
+                    System.out.println("Categoria: " + producto.getCategoria());
+                    System.out.println("etiqueta: " + producto.getEtiqueta());
+                    System.out.println("Precio: " + producto.getPrecio());
+                    System.out.println("Cantidad: " + producto.getCantidad());
+                    System.out.println("ID: " + producto.getId());
+                    System.out.println();
+                }
+            } else {
+                System.out.println("No se encontraron productos en la categoría especificada.");
+            }
+        } else {
+            System.out.println("Opción inválida. Por favor intenta de nuevo.");
+        }
+    }
+
+
+    //......................................................................
+    private void searchProductByName() {
+        System.out.println("Ingrese el nombre del producto a buscar:");
+        String nombre = scanner.nextLine().toLowerCase();
+
+        List<Producto> productosEncontrados = inventario.buscarProductosPorNombre(nombre);
+
+        if (!productosEncontrados.isEmpty()) {
+            System.out.println("Productos encontrados:");
+            for (Producto producto : productosEncontrados) {
+                System.out.println("Nombre: " + producto.getNombre());
+                System.out.println("Descripcion: " + producto.getDescripcion());
+                System.out.println("Categoria: " + producto.getCategoria());
+                System.out.println("etiqueta: " + producto.getEtiqueta());
+                System.out.println("Precio: " + producto.getPrecio());
+                System.out.println("Cantidad: " + producto.getCantidad());
+                System.out.println("ID: " + producto.getId());
+                System.out.println();
+            }
+        } else {
+            System.out.println("No se encontraron productos con el nombre especificado.");
+        }
+    }
+
+
+
+    //......................................................................
+
+
+
 
 
     public void runMenu() {
@@ -139,7 +194,7 @@ public class Main {
             choice = scanner.nextInt();
             scanner.nextLine();
             handleUserChoice(choice);
-        } while (choice != 5);
+        } while (choice != 6);
     }
 
     public void displayMenu() {
@@ -150,21 +205,78 @@ public class Main {
         System.out.println("2. Eliminar producto                     |");
         System.out.println("3. Actualizar producto                   |");
         System.out.println("4. Ver todos los productos               |");
-        System.out.println("5. Salir                                 |");
+        System.out.println("5. Ver productos por categoría           |");
+        System.out.println("6. Buscar producto por nombre            |");
+        System.out.println("7. Salir                                 |");
         System.out.println("±----------------------------------------±");
-        System.out.print("   Ingresa tu opción:    (1 - 5)  ");
+        System.out.print("   Ingresa tu opción:    (1 - 6)  ");
     }
+
+
+
 
     public void handleUserChoice(int choice) {
         switch (choice) {
-            case 1 -> addProduct();
-            case 2 -> removeProduct();
-            case 3 -> updateProduct();
-            case 4 -> viewAllProducts();
-            case 5 -> System.out.println("Saliendo...");
-            default -> System.out.println("Opción inválida. Por favor intenta de nuevo.");
+            case 1:
+                addProduct();
+                break;
+            case 2:
+                removeProduct();
+                break;
+            case 3:
+                updateProduct();
+                break;
+            case 4:
+                viewAllProducts();
+                break;
+            case 5:
+                viewProductsByCategory();
+                break;
+            case 6:
+                searchProductByName();
+                break;
+            case 7:
+                System.out.println("Saliendo...");
+                break;
+            default:
+                System.out.println("Opción inválida. Por favor intenta de nuevo.");
         }
     }
+
+    public void displayMenuCategorias() {
+        System.out.println("±----------------------------------------±");
+        System.out.println("|          Menú de Categorías            |");
+        System.out.println("±----------------------------------------±");
+
+        int indice = 1;
+        for (Categoria categoria : Categoria.values()) {
+            if (categoria != Categoria.OTRA_CATEGORIA) {
+                System.out.println(indice + ". " + categoria);
+                indice++;
+            }
+        }
+
+        System.out.print("   Ingresa el número de la categoría (1 - " + (Categoria.values().length - 1) + "): ");
+    }
+
+    public int obtenerOpcionCategoria() {
+        Scanner scanner = new Scanner(System.in);
+        String input;
+
+        while (true) {
+            input = scanner.nextLine();
+            try {
+                int opcion = Integer.parseInt(input);
+                return opcion;
+            } catch (NumberFormatException e) {
+                System.out.println("Por favor ingresa un número válido.");
+            }
+        }
+    }
+
+
+
+
 
     public static void main(String[] args) {
         ExcelReader excelReader = new ExcelReader();

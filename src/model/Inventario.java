@@ -11,32 +11,45 @@ public class Inventario {
     public Inventario() {
         this.productos = new ArrayList<>();
     }
+    //......................................................................
+    public List<Producto> buscarProductosPorNombre(String nombre) {
+        List<Producto> productosEncontrados = new ArrayList<>();
+
+        for (Producto producto : productos) {
+            if (producto.getNombre().toLowerCase().contains(nombre)) {
+                productosEncontrados.add(producto);
+            }
+        }
+
+        return productosEncontrados;
+    }
+
+
+    //............................................................................
 
     public void agregarProducto(Producto producto) {
         productos.add(producto);
     }
 
-
-
-
-    /*public void agregarProductoPorId(int id) {
-        Producto producto = obtenerProductoPorId(id);
-        if (producto != null) {
-            agregarProducto(producto);
-        }
-    }*/
-
     public void agregarProductoPorId(int id, int cantidad) {
         Producto producto = obtenerProductoPorId(id);
         if (producto != null) {
-            //producto.setCantidad(cantidad); // Asignar la cantidad al producto
+            producto.setCantidad(cantidad); // Asignar la cantidad al producto
             agregarProducto(producto);
         }
     }
 
+    public List<Producto> getProductosPorCategoria(Categoria categoria) {
+        List<Producto> productosPorCategoria = new ArrayList<>();
 
+        for (Producto producto : productos) {
+            if (producto.getCategoria() == categoria) {
+                productosPorCategoria.add(producto);
+            }
+        }
 
-
+        return productosPorCategoria;
+    }
 
     public Producto obtenerProductoPorId(int id) {
         for (Producto producto : productos) {
@@ -44,7 +57,7 @@ public class Inventario {
                 return producto;
             }
         }
-        return null; // Si no se encuentra el producto con el ID especificado
+        return null;
     }
 
     public Map<Categoria, List<Producto>> organizarPorCategoria() {
