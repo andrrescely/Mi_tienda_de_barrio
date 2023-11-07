@@ -25,7 +25,7 @@ public class ProductsArray {
         products [14] = "Espinaca";
         products [15] = "Lentejas";
         products [16] = "Frijoles";
-        products [17] = "Auyama";
+        products [17] = "Ahuyama";
         products [18] = "Calabaza";
         products [19] = "Cilantro";
 
