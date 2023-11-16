@@ -1,19 +1,15 @@
 package org.example;
-//import model.Cliente;
+import model.Cliente;
 import java.util.List;
 import java.util.Scanner;
 import model.Categoria;
 import model.ExcelReader;
 import model.Producto;
 import model.Inventario;
-
 import java.util.Map;
-
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-
-import java.util.*;
 
 public class Main {
 
@@ -48,7 +44,7 @@ public class Main {
         }
     }
 
-
+    //AGREGAR PORDUCTO
     private void addProduct() {
         System.out.println("Ingrese el nombre del producto:");
         String nombre = scanner.nextLine();
@@ -63,7 +59,6 @@ public class Main {
         double precio = scanner.nextDouble();
         scanner.nextLine();
 
-        // Mostrar menú de categorías y obtener selección del usuario
         System.out.println("Seleccione una categoría:");
         for (int i = 0; i < Categoria.values().length; i++) {
             System.out.println((i + 1) + ". " + Categoria.values()[i]);
@@ -92,7 +87,7 @@ public class Main {
         }
     }
 
-
+    //REMOVER PORDUCTO
     private void removeProduct() {
         System.out.println("Ingrese el nombre del producto a eliminar:");
         String nombre = scanner.nextLine();
@@ -105,7 +100,6 @@ public class Main {
             System.out.println("Producto no encontrado en el inventario.");
         }
     }
-
     private void updateProduct() {
         System.out.println("Ingrese el nombre del producto a actualizar:");
         String nombre = scanner.nextLine();
@@ -154,8 +148,8 @@ public class Main {
         }
     }
 
-
     //......................................................................
+    //BUSCAR PORDUCTO POR NOMBRE
     private void searchProductByName() {
         System.out.println("Ingrese el nombre del producto a buscar:");
         String nombre = scanner.nextLine().toLowerCase();
@@ -178,15 +172,10 @@ public class Main {
             System.out.println("No se encontraron productos con el nombre especificado.");
         }
     }
-
-
-
     //......................................................................
 
 
-
-
-
+    //MENU
     public void runMenu() {
         int choice;
         do {
@@ -242,7 +231,7 @@ public class Main {
                 System.out.println("Opción inválida. Por favor intenta de nuevo.");
         }
     }
-
+    //MENU DE CATEGORIAS
     public void displayMenuCategorias() {
         System.out.println("±----------------------------------------±");
         System.out.println("|          Menú de Categorías            |");
@@ -258,7 +247,7 @@ public class Main {
 
         System.out.print("   Ingresa el número de la categoría (1 - " + (Categoria.values().length - 1) + "): ");
     }
-
+    //OBTENER CATEGORIAS
     public int obtenerOpcionCategoria() {
         Scanner scanner = new Scanner(System.in);
         String input;
