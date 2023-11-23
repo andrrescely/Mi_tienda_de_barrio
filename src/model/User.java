@@ -1,7 +1,7 @@
 package model;
 
 public class User {
-
+    private Long id;
     private String name;
     private String address;
     private String phoneNumber;
@@ -13,17 +13,15 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    // Determinar si el usuario tiene una dirección específica
-    public boolean hasSpecificAddress(String specificAddress) {
-        return address.equals(specificAddress);
-    }
-
-    // Verificar si el número de teléfono contiene un cierto dígito
-    public boolean phoneNumberContainsDigit(char digit) {
-        return phoneNumber.contains(String.valueOf(digit));
-    }
-
     // Getters y setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
@@ -47,4 +45,26 @@ public class User {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
+    // Determinar si el usuario tiene una dirección específica
+    public boolean hasSpecificAddress(String specificAddress) {
+        return address.equals(specificAddress);
+    }
+
+    // Verificar si el número de teléfono contiene un cierto dígito
+    public boolean phoneNumberContainsDigit(char digit) {
+        return phoneNumber.contains(String.valueOf(digit));
+    }
+
+    // Método toString para imprimir los detalles del usuario
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                '}';
+    }
+
 }
